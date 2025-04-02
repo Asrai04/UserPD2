@@ -1,17 +1,18 @@
 #include <iostream>
-#include "Mpointers.h"  // Asegúrate de que este archivo esté en el mismo directorio o correctamente referenciado
+#include "Mpointers.cpp"  // Incluir el archivo con la implementación de la clase Mpointers
 
 int main() {
-    // Crear un objeto MPointers para un puerto específico (por ejemplo, puerto 8000)
-    int puerto = 8000;
-    MPointers<int> ptr = MPointers<int>::New(puerto);
+    // Crear un objeto de la clase Mpointers con el puerto 8000
+    Mpointers<double> cliente(8000);
 
-    // Asignar un valor al objeto
-    *ptr = 42;  // Esto debería disparar el envío del valor al servidor
+    // Usar el operador *= para asignar un valor a 'value' y enviarlo al servidor
+    cliente *= 99.9742;  // Enviar el valor convertido a string (en este caso "42")
 
-    // Obtener el valor almacenado mediante el operador *
-    int valor = *ptr;  // Esto te dará el valor almacenado en 'ptr'
-    std::cout << "Valor almacenado: " << valor << std::endl;
+    // Usar el operador * para obtener el valor almacenado y asignarlo a una variable
+    double valor = *cliente;  // Esto obtiene el valor almacenado en 'cliente'
+
+    // Verificar que el valor se guardó correctamente
+    std::cout << "Valor almacenado en cliente: " << valor << std::endl;  // Imprimir el valor
 
     return 0;
 }

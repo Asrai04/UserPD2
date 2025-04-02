@@ -1,74 +1,99 @@
-#include "MPointers.h"
-#include <winsock2.h>
 #include <iostream>
+#include <string>
+#include <winsock2.h>  // Biblioteca de Winsock para trabajar con sockets en Windows
+
+#pragma comment(lib, "ws2_32.lib")  // Vincula la biblioteca Winsock
 
 template <typename T>
-MPointers<T>::MPointers(int puerto) : port(puerto), value(T()) {}
+class Mpointers {
+private:
+    int puerto;
+    T value;
+    int id_Memory_Block = -1;
 
-template <typename T>
-MPointers<T> MPointers<T>::New(int puerto) {
-    return MPointers<T>(puerto);
-}
-
-template <typename T>
-T& MPointers<T>::operator*() {
-    std::cout << "Valor enviedo:" << value << std::endl;
-    return value;  // Devuelve la referencia al valor (getter)
-}
-
-template <typename T>
-void MPointers<T>::operator*(const T& newValue) {
-    value = newValue;  // Asignamos el nuevo valor (setter)
-    sendToServer(value);  // Enviamos el valor al servidor
-    std::cout << "Valor enviado:" << value << std::endl;
-}
-
-template <typename T>
-void MPointers<T>::sendToServer(const T& value) {
-    // Inicializar Winsock
-    WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-        std::cerr << "WSAStartup falló" << std::endl;
-        return;
+public:
+    // Marcar el constructor como 'explicit' para evitar conversiones implícitas
+    explicit Mpointers(int puerto) : value(T()), puerto(puerto) {
+        sendServer("Create " + getTypeName<T>());
     }
 
-    // Crear el socket
-    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock == INVALID_SOCKET) {
-        std::cerr << "Error al crear el socket" << std::endl;
+    // Operador de desreferenciación
+    T operator*() {
+        return value;
+    }
+
+    void operator*=(T value) {
+        this->value = value;
+        std::string valueAsString;
+        valueAsString = "Set " + std::to_string(value);  // Usamos to_string si T es numérico
+        sendServer(valueAsString);
+    }
+
+    void sendServer(std::string Mensaje) {
+        WSADATA wsaData;
+        int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+        if (result != 0) {
+            std::cerr << "Error al inicializar Winsock. Código de error: " << result << std::endl;
+            return;
+        }
+
+        // Crear un socket
+        SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        if (clientSocket == INVALID_SOCKET) {
+            std::cerr << "Error al crear el socket. Código de error: " << WSAGetLastError() << std::endl;
+            WSACleanup();
+            return;
+        }
+
+        // Dirección del servidor (localhost)
+        sockaddr_in serverAddr;
+        serverAddr.sin_family = AF_INET;
+        serverAddr.sin_port = htons(puerto);  // Puerto del servidor
+        serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");  // Dirección IP del servidor (localhost)
+
+        // Conectar al servidor
+        result = connect(clientSocket, (sockaddr*)&serverAddr, sizeof(serverAddr));
+        if (result == SOCKET_ERROR) {
+            std::cerr << "No se pudo conectar al servidor. Código de error: " << WSAGetLastError() << std::endl;
+            closesocket(clientSocket);
+            WSACleanup();
+            return;
+        }
+
+        // Enviar el mensaje al servidor
+        result = send(clientSocket, Mensaje.c_str(), Mensaje.size(), 0);
+        if (result == SOCKET_ERROR) {
+            std::cerr << "Error al enviar el mensaje. Código de error: " << WSAGetLastError() << std::endl;
+        } else {
+            std::cout << "Mensaje enviado: " << Mensaje << std::endl;
+        }
+
+        // Cerrar el socket
+        closesocket(clientSocket);
+
+        // Limpiar Winsock
         WSACleanup();
-        return;
+    }
+    int getPuerto() {
+        return puerto;
+    }
+    int getId_Memory_Block() {
+        return id_Memory_Block;
     }
 
-    // Configurar la dirección del servidor
-    sockaddr_in serverAddr;
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(port);  // Puerto
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");  // Dirección localhost
 
-    // Conectar al servidor
-    if (connect(sock, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
-        std::cerr << "Conexión fallida" << std::endl;
-        closesocket(sock);
-        WSACleanup();
-        return;
+private:
+    // Función para obtener el nombre del tipo de instancia
+    template <typename U>
+    std::string getTypeName() {
+        if (typeid(U) == typeid(int)) {
+            return "int";
+        } else if (typeid(U) == typeid(double)) {
+            return "double";
+        } else if (typeid(U) == typeid(float)) {
+            return "float";
+        } else {
+            return "unknown";
+        }
     }
-
-    // Enviar el valor (en este caso, un valor de tipo T)
-    if (send(sock, reinterpret_cast<const char*>(&value), sizeof(value), 0) == SOCKET_ERROR) {
-        std::cerr << "Error al enviar datos" << std::endl;
-    } else {
-        std::cout << "Valor enviado: " << value << std::endl;
-    }
-
-    // Cerrar el socket
-    closesocket(sock);
-
-    // Limpiar Winsock
-    WSACleanup();
-}
-
-// Instanciación explícita para el tipo int
-template class MPointers<int>;
-template class MPointers<float>;
-template class MPointers<double>;
+};

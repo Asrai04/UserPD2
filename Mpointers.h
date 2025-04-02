@@ -1,31 +1,43 @@
-#ifndef MPointer_H
-#define MPointer_H
+#ifndef M_POINTERS_H
+#define M_POINTERS_H
 
 #include <iostream>
-#include <winsock2.h>  // Incluir la librería de Winsock para trabajar con sockets en Windows
+#include <string>
 
-template <typename T>
-class MPointers {
-private:
-    int port;  // El puerto donde se enviará el valor
-    T value;   // El valor que se desea enviar
+template<typename T>
 
-public:
-    // Constructor para configurar el puerto
-    MPointers(int puerto);
+class Mpointers {
+    private:
+        int puerto;
+        T value;
+        int id_Memory_Block = -1;
+    public:
 
-    // Método estático para crear una nueva instancia de MPointer
-    static MPointers<T> New(int puerto);
+    explicit Mpointers(int puerto) : value(T()), puerto(puerto) {}
 
-    // Sobrecargar el operador * para devolver una referencia al valor
-    T& operator*();
+    T operator*() {
+    }
 
-    // Sobrecargar el operador = para asignar un valor y enviarlo
-    void operator*(const T& newValue);
+    void operator*=(T NewValue) {
+    }
 
-private:
-    // Función para enviar el valor al servidor mediante un socket
-    void sendToServer(const T& value);
+    void operator=(Mpointers Mpointer) {
+
+    }
+
+    static void sendServer(std::string Mensaje) {
+    }
+
+    int getPuerto() {
+
+    }
+    int getId_Memory_Block() {
+
+    }
+    T getValue() {
+
+    }
+
 };
 
-#endif
+#endif // M_POINTERS_H
