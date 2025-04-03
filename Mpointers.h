@@ -18,25 +18,25 @@ class Mpointers {
     T operator*() {
     }
 
-    void operator*=(T NewValue) {
+    void operator=(T NewValue) {
     }
 
     void operator=(Mpointers Mpointer) {
-
     }
 
     static void sendServer(std::string Mensaje) {
     }
 
     int getPuerto() {
-
     }
+
     int getId_Memory_Block() {
-
     }
+
     T getValue() {
-
     }
+
+
 
 };
 

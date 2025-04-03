@@ -22,7 +22,7 @@ public:
         return value;
     }
 
-    void operator*=(T value) {
+    void operator=(T value) {
         this->value = value;
         std::string valueAsString;
         valueAsString = "Set " + std::to_string(value);  // Usamos to_string si T es numérico
