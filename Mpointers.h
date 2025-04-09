@@ -13,7 +13,9 @@ class Mpointers {
         int id_Memory_Block = -1;
     public:
 
-    explicit Mpointers(int puerto) : value(T()), puerto(puerto) {}
+    explicit Mpointers(int puerto) : value(T()), puerto(puerto) {
+        sendServer("Create" );
+    }
 
     T operator*() {
     }
@@ -21,11 +23,7 @@ class Mpointers {
     void operator=(T NewValue) {
     }
 
-    void operator=(Mpointers Mpointer) {
-    }
-
-    static void sendServer(std::string Mensaje) {
-    }
+    static void sendServer(std::string Mensaje){}
 
     int getPuerto() {
     }
