@@ -22,11 +22,16 @@ public:
         return value;
     }
 
-    void operator*=(T value) {
-        this->value = value;
-        std::string valueAsString;
-        valueAsString = "Set " + std::to_string(value);  // Usamos to_string si T es numérico
+    void operator=(const T& val) {
+        this->value = val;
+        std::string valueAsString = "Set " + std::to_string(val);
         sendServer(valueAsString);
+    }
+
+    // Operador de asignación para otra instancia de Mpointers del mismo tipo
+    void operator=(const Mpointers<T>& other) {
+        sendServer("Get id");
+
     }
 
     void sendServer(std::string Mensaje) {
