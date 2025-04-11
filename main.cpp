@@ -17,5 +17,7 @@ int main() {
 
     server = cliente;
 
+    std::cout << "Id nuevo: " << server.getId_Memory_Block() << std::endl;
+
     return 0;
 }

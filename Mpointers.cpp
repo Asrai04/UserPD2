@@ -10,9 +10,10 @@ private:
     int puerto;
     T value;
     int id_Memory_Block = 1;
+    std::string Tipo = getTypeName<T>();
 
     explicit Mpointers(int puerto) : value(T()), puerto(puerto) {
-        sendServer("Create " + getTypeName<T>());
+        sendServer("Create (" + getTypeName<T>() + ")");
     }
 
 public:
@@ -22,12 +23,14 @@ public:
 
     // Operador de desreferenciación
     T operator*() {
-        return value;
+        std::string valueAsString = "get(" + std::to_string(id_Memory_Block) + ")";
+        T respuesta = str_to_T(valueAsString);
+        return respuesta;
     }
 
     void operator=(const T& val) {
         this->value = val;
-        std::string valueAsString = "Set " + std::to_string(val);
+        std::string valueAsString = "Set (" + std::to_string(id_Memory_Block)+ ", " + std::to_string(val) + ")";
         sendServer(valueAsString);
     }
 
@@ -110,6 +113,47 @@ public:
     }
     int getId_Memory_Block() {
         return id_Memory_Block;
+    }
+
+    T str_to_T(const std::string& str) {
+
+        if (Tipo == "int") {
+            try {
+                return std::stoi(str);
+            } catch (const std::invalid_argument&) {
+                std::cerr << "Error: Valor no numérico (int): " << str << std::endl;
+                return 0;
+            } catch (const std::out_of_range&) {
+                std::cerr << "Error: Número fuera de rango (int): " << str << std::endl;
+                return 0;
+            }
+        }
+        else if (Tipo == "float") {
+            try {
+                return std::stof(str);
+            } catch (const std::invalid_argument&) {
+                std::cerr << "Error: Valor no numérico (float): " << str << std::endl;
+                return 0.0f;
+            } catch (const std::out_of_range&) {
+                std::cerr << "Error: Número fuera de rango (float): " << str << std::endl;
+                return 0.0f;
+            }
+        }
+        else if (Tipo == "double") {
+            try {
+                return std::stod(str);
+            } catch (const std::invalid_argument&) {
+                std::cerr << "Error: Valor no numérico (double): " << str << std::endl;
+                return 0.0;
+            } catch (const std::out_of_range&) {
+                std::cerr << "Error: Número fuera de rango (double): " << str << std::endl;
+                return 0.0;
+            }
+        }
+        else {
+            return T(); // Devuelve valor por defecto para tipos no implementados
+        }
+
     }
 
 
