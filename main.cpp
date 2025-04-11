@@ -1,23 +1,28 @@
 #include <iostream>
 #include "Mpointers.cpp"  // Incluir el archivo con la implementación de la clase Mpointers
-
+#include "ListaEnlazada.cpp"
 int main() {
-    // Crear un objeto de la clase Mpointers con el puerto 8000
-    Mpointers<int> cliente = Mpointers<int>::New(8000);
+    LinkedList<int> list;
 
-    // Usar el operador = para asignar un valor a 'value' y enviarlo al servidor
-    cliente = 102;  // Enviar el valor convertido a string (en este caso "42")
-    // Usar el operador * para obtener el valor almacenado y asignarlo a una variable
-    double valor = *cliente;  // Esto obtiene el valor almacenado en 'cliente'
+    auto ptr1 = Mpointers<int>::New(8000);
+    auto ptr2 = Mpointers<int>::New(8000);
 
-    // Verificar que el valor se guardó correctamente
-    std::cout << "Valor almacenado en cliente: " << valor << std::endl;  // Imprimir el valor
+    ptr1 = 100;
+    ptr2 = 200;
 
-    Mpointers<int> server = Mpointers<int>::New(8000);
+    list.append(ptr1);
+    list.prepend(ptr2);
 
-    server = cliente;
+    std::cout << "Lista completa:" << std::endl;
+    list.print();
 
-    std::cout << "Id nuevo: " << server.getId_Memory_Block() << std::endl;
+    // Buscar un elemento
+    auto found = list.findById(ptr1.getId_Memory_Block());
+    if (found) {
+        std::cout << "\nEncontrado: " << **found << std::endl;
+    }
 
+    // No hay forma de eliminar elementos individualmente
+    // La memoria se libera automáticamente al salir del ámbito
     return 0;
 }

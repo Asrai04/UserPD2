@@ -13,7 +13,9 @@ private:
     std::string Tipo = getTypeName<T>();
 
     explicit Mpointers(int puerto) : value(T()), puerto(puerto) {
-        sendServer("Create " + getTypeName<T>());
+        std::string id = sendServer("Create " + getTypeName<T>());
+        id_Memory_Block = std::stoi(id);
+        std::cout << "ID: " << id << std::endl;
     }
 
 public:
@@ -23,14 +25,15 @@ public:
 
     // Operador de desreferenciación
     T operator*() {
-        std::string valueAsString = std::to_string(sendServer("get " + std::to_string(id_Memory_Block)));
-        T respuesta = str_to_T(valueAsString);
+        std::string valueAsString = "get " + std::to_string(id_Memory_Block);
+        std::string as = sendServer(valueAsString);
+        T respuesta = str_to_T(as);
         return respuesta;
     }
 
     void operator=(const T& val) {
-        this->value = val;
-        std::string valueAsString = "Set " + std::to_string(id_Memory_Block)+ " " + std::to_string(val);
+        value = val;
+        std::string valueAsString = "Set " + std::to_string(id_Memory_Block) + " " + std::to_string(val);
         sendServer(valueAsString);
     }
 
@@ -38,11 +41,11 @@ public:
     void operator=(const Mpointers<T>& other) {
         int new_id = other.id_Memory_Block;
         this->id_Memory_Block = new_id;
-        sendServer("IncreaseRefCount");
+        sendServer("IncreaseRefCount " + std::to_string(id_Memory_Block));
     }
 
     void Kill() {
-        sendServer("DecreaseRefCount");
+        sendServer("DecreaseRefCount " + std::to_string(id_Memory_Block));
     }
 
     std::string sendServer(const std::string& Mensaje) {
