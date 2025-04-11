@@ -5,7 +5,6 @@ project(untitled5)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(untitled5 main.cpp
-        Mpointers.cpp
         Mpointers.h
         ListaEnlazada.cpp
         ListaEnlazada.h)

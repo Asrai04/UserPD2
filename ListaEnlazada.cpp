@@ -1,4 +1,4 @@
-#include "Mpointers.cpp"  // Incluir el archivo con la implementación de la clase Mpointers
+#include "Mpointers.h"  // Incluir el archivo con la implementación de la clase Mpointers
 
 template <typename T>
 class LinkedList {
