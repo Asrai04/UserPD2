@@ -23,7 +23,7 @@ public:
 
     // Operador de desreferenciación
     T operator*() {
-        std::string valueAsString = "get " + std::to_string(id_Memory_Block) + "";
+        std::string valueAsString = std::to_string(sendServer("get " + std::to_string(id_Memory_Block)));
         T respuesta = str_to_T(valueAsString);
         return respuesta;
     }
