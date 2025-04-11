@@ -90,6 +90,50 @@ public:
             current = current->next;
         }
     }
+    bool removeByIdAndAdjust(int id) {
+        Node* current = head;
+        Node* prev = nullptr;
+        bool found = false;
+
+        // Primero buscamos y eliminamos el nodo con el ID especificado
+        while (current) {
+            if (&current->data == id) {
+                found = true;
+
+                // Eliminar el nodo encontrado
+                if (prev) {
+                    prev->next = current->next;
+                } else {
+                    head = current->next;
+                }
+
+                if (current == tail) {
+                    tail = prev;
+                }
+
+                current->data.Kill(); // Liberar el Mpointer
+                delete current;
+                size--;
+                break;
+            }
+            prev = current;
+            current = current->next;
+        }
+
+        // Si encontramos y eliminamos el nodo, ajustamos los IDs mayores
+        if (found) {
+            current = head;
+            while (current) {
+                if (&current->data > id) {
+                    // Restamos 1 al ID de los nodos con ID mayor
+                    current->data.Update_Id(1);
+                }
+                current = current->next;
+            }
+        }
+
+        return found;
+    }
 
     // Eliminar operaciones de copia por seguridad
     LinkedList(const LinkedList&) = delete;

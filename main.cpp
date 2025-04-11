@@ -9,9 +9,11 @@ int main() {
     Mpointers<int> ptr2 = Mpointers<int>::New(8000);
     Mpointers<int> ptr3 = Mpointers<int>::New(8000);
 
+    Mpointers<double> ptr4 = Mpointers<double>::New(8000);
+
     ptr1 = 100;
     ptr2 = 200;
-    ptr3 = ptr1;
+    ptr3 = 300;
 
     int valor = *ptr1;
 
@@ -25,7 +27,10 @@ int main() {
     std::cout << "Lista completa:" << std::endl;
     list.print();
 
-    ptr2.Kill();
+    list.removeByIdAndAdjust(&ptr2);
+
+    list.print();
+
     // La memoria se libera automáticamente al salir del ámbito
     return 0;
 }

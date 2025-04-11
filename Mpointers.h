@@ -52,8 +52,9 @@ public:
         sendServer("IncreaseRefCount " + std::to_string(id_Memory_Block));
     }
 
-    void Kill() {
-        sendServer("DecreaseRefCount " + std::to_string(id_Memory_Block));
+    std::string Kill() {
+        std::string respuesta = sendServer("DecreaseRefCount " + std::to_string(id_Memory_Block));
+        return respuesta;
     }
 
     std::string sendServer(const std::string& Mensaje) {
@@ -211,6 +212,10 @@ public:
             return T(); // Devuelve valor por defecto para tipos no implementados
         }
 
+    }
+
+    void Update_Id(int n) {
+        id_Memory_Block = id_Memory_Block - n;
     }
 
 
