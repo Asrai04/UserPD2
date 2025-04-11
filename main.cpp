@@ -8,12 +8,14 @@ int main() {
     Mpointers<int> ptr1 = Mpointers<int>::New(8000);
     Mpointers<int> ptr2 = Mpointers<int>::New(8000);
     Mpointers<int> ptr3 = Mpointers<int>::New(8000);
+    Mpointers<int> ptr4 = Mpointers<int>::New(8000);
 
-    Mpointers<double> ptr4 = Mpointers<double>::New(8000);
+    Mpointers<double> ptr5 = Mpointers<double>::New(8000);
 
     ptr1 = 100;
     ptr2 = 200;
     ptr3 = 300;
+    ptr4 = ptr1;
 
     int valor = *ptr1;
 
@@ -22,6 +24,7 @@ int main() {
     list.prepend(ptr1);
     list.prepend(ptr2);
     list.prepend(ptr3);
+    list.prepend(ptr4);
 
 
     std::cout << "Lista completa:" << std::endl;
