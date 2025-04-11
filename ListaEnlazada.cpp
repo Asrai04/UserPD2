@@ -21,7 +21,6 @@ public:
 
     // Destructor (importante para liberar memoria)
     ~LinkedList() {
-        clear();
     }
 
     // Método para limpiar toda la lista
@@ -85,8 +84,9 @@ public:
     void print() const {
         Node* current = head;
         while (current) {
-            std::cout << "ID: " << current->data.getId_Memory_Block() 
-                      << ", Value: " << *current->data << std::endl;
+            std::cout << "ID: " << &current->data
+                      << ", Value: " << *current->data <<
+                          std::endl;
             current = current->next;
         }
     }

@@ -35,6 +35,10 @@ public:
         return respuesta;
     }
 
+    int operator&() {
+        return id_Memory_Block;
+    }
+
     void operator=(const T& val) {
         value = val;
         std::string valueAsString = "Set " + std::to_string(id_Memory_Block) + " " + std::to_string(val);
@@ -166,9 +170,6 @@ public:
 
     int getPuerto() {
         return puerto;
-    }
-    int getId_Memory_Block() {
-        return id_Memory_Block;
     }
 
     T str_to_T(const std::string& str) {

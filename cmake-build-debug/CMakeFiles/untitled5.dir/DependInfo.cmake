@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/sofia/CLionProjects/UserPD2/ListaEnlazada.cpp" "CMakeFiles/untitled5.dir/ListaEnlazada.cpp.obj" "gcc" "CMakeFiles/untitled5.dir/ListaEnlazada.cpp.obj.d"
-  "C:/Users/sofia/CLionProjects/UserPD2/main.cpp" "CMakeFiles/untitled5.dir/main.cpp.obj" "gcc" "CMakeFiles/untitled5.dir/main.cpp.obj.d"
+  "C:/Users/ariel/CLionProjects/UserPD2/ListaEnlazada.cpp" "CMakeFiles/untitled5.dir/ListaEnlazada.cpp.obj" "gcc" "CMakeFiles/untitled5.dir/ListaEnlazada.cpp.obj.d"
+  "C:/Users/ariel/CLionProjects/UserPD2/main.cpp" "CMakeFiles/untitled5.dir/main.cpp.obj" "gcc" "CMakeFiles/untitled5.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
